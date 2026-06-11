@@ -1,4 +1,12 @@
-:root {
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ResumeScore AI</title>
+  <style>
+    :root {
       --bg: oklch(100% 0 0);
       --surface: oklch(97.25% 0.002 286.3);
       --surface-strong: oklch(95.4% 0.004 260);
@@ -746,3 +754,378 @@
         transition-duration: 0.01ms !important;
       }
     }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow fade-up">
+        <span class="eyebrow-dot" aria-hidden="true"></span>
+        ResumeScore AI
+      </div>
+      <h1 class="fade-up delay-1">Know Exactly How Strong Your Resume Is.</h1>
+      <p class="hero-copy fade-up delay-2">Upload your resume and receive a professional AI-powered evaluation in seconds. Clear scoring, ATS insight, and practical revisions without the noise of a dashboard.</p>
+      <div class="hero-actions fade-up delay-3">
+        <button class="primary-button" type="button" id="hero-cta">Analyze My Resume</button>
+      </div>
+    </section>
+
+    <section class="upload-shell" aria-labelledby="upload-heading">
+      <div class="upload-panel">
+        <div class="upload-header">
+          <div>
+            <p class="section-label">Single-page experience</p>
+            <h2 class="section-title" id="upload-heading">Upload once. Understand what to improve next.</h2>
+            <p class="section-copy">The upload area is the product. Drop in a resume, let the AI review structure and keyword coverage, then see the result directly below.</p>
+          </div>
+          <div class="supported" aria-label="Supported files">
+            <strong>Supported files</strong>
+            <span>PDF • DOCX</span>
+          </div>
+        </div>
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-describedby="dropzone-description" aria-label="Upload resume">
+          <input class="hidden-input" id="resume-input" type="file" accept=".pdf,.doc,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword">
+          <div class="dropzone-inner" id="dropzone-inner">
+            <div class="upload-glyph" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+                <path d="M17 7v14m0-14 5 5m-5-5-5 5M8.5 22.5v1.5c0 1.38 1.12 2.5 2.5 2.5h12c1.38 0 2.5-1.12 2.5-2.5v-1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="flow">
+              <h3 class="upload-headline">Drag and drop your resume.</h3>
+              <p class="upload-copy" id="dropzone-description">Or browse from your device. Your file stays in this experience while we simulate a premium AI review flow.</p>
+            </div>
+            <div class="hero-actions">
+              <button class="upload-browse" type="button" id="browse-button">Choose File</button>
+            </div>
+            <div class="pill">PDF or DOCX, analyzed in one focused pass.</div>
+          </div>
+        </div>
+
+        <div class="file-summary" id="file-summary" aria-live="polite">
+          <div>
+            <p class="file-name" id="file-name">resume.pdf</p>
+            <p class="file-meta" id="file-meta">PDF document ready for analysis</p>
+          </div>
+          <button class="secondary-button" type="button" id="replace-button">Replace File</button>
+        </div>
+
+        <section class="analysis" id="analysis" aria-live="polite" aria-label="AI analysis in progress">
+          <div class="analysis-card">
+            <div class="analysis-topline">
+              <div>
+                <h3 class="analysis-title">Analyzing your resume</h3>
+                <p class="analysis-subtitle">A focused review of experience, structure, ATS readiness, and recommendation quality.</p>
+              </div>
+              <div class="progress-index" id="progress-index">Step 1 of 5</div>
+            </div>
+            <div class="progress-bar" aria-hidden="true">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-list" id="progress-list"></div>
+          </div>
+        </section>
+
+        <section class="results" id="results" aria-live="polite" aria-labelledby="results-heading">
+          <div class="results-grid">
+            <article class="results-card">
+              <div>
+                <p class="section-label">Resume evaluation</p>
+                <h3 class="section-title" id="results-heading">Your result, directly below the upload.</h3>
+              </div>
+
+              <div class="score-wrap">
+                <div class="score-value" id="score-value">92</div>
+                <div class="score-meta">
+                  <span class="score-caption">out of 100</span>
+                  <span class="score-grade" id="score-grade">Outstanding</span>
+                </div>
+              </div>
+
+              <div class="meter">
+                <div class="meter-row">
+                  <span>ATS Compatibility</span>
+                  <strong id="ats-value">86%</strong>
+                </div>
+                <div class="meter-track" aria-hidden="true">
+                  <div class="meter-fill" id="ats-fill"></div>
+                </div>
+                <p class="micro-note">Strong formatting and keyword relevance. A few role-specific terms would improve matching further.</p>
+              </div>
+            </article>
+
+            <article class="results-card compact">
+              <div class="list-block">
+                <h4 class="list-title">Missing Keywords</h4>
+                <div class="keyword-wrap" id="keywords"></div>
+              </div>
+              <div class="list-block">
+                <h4 class="list-title">Suggested Improvements</h4>
+                <ul class="insight-list" id="suggestions"></ul>
+              </div>
+            </article>
+          </div>
+
+          <div class="results-grid">
+            <article class="results-card compact">
+              <div class="list-block">
+                <h4 class="list-title">Strengths</h4>
+                <ul class="insight-list" id="strengths"></ul>
+              </div>
+              <div class="list-block">
+                <h4 class="list-title">Areas for Improvement</h4>
+                <ul class="insight-list" id="weaknesses"></ul>
+              </div>
+            </article>
+
+            <article class="results-card compact">
+              <div class="list-block">
+                <h4 class="list-title">Before and After Example</h4>
+                <div class="examples">
+                  <article class="example-card before">
+                    <p class="example-label">Before</p>
+                    <p class="example-text" id="before-copy">Worked on projects and helped improve team workflows.</p>
+                  </article>
+                  <article class="example-card after">
+                    <p class="example-label">After</p>
+                    <p class="example-text" id="after-copy">Led three cross-functional project launches, cutting review time by 28% and improving handoff clarity across design and engineering.</p>
+                  </article>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const analysisSteps = [
+      "Reading Resume",
+      "Evaluating Experience",
+      "Checking ATS Compatibility",
+      "Identifying Weaknesses",
+      "Generating Recommendations"
+    ];
+
+    const sampleResults = {
+      score: 92,
+      grade: "Outstanding",
+      ats: 86,
+      strengths: [
+        "Clear role progression with measurable impact across internships and full-time work.",
+        "Strong readability with concise bullets and clean section hierarchy.",
+        "Relevant tools and technical skills are grouped logically for quick recruiter scanning.",
+        "Education and project work support the target role without overwhelming the page."
+      ],
+      weaknesses: [
+        "Several bullets describe responsibilities but not outcomes.",
+        "Role-specific keywords for product analysis and stakeholder communication are underused.",
+        "The summary can position the candidate more clearly for the exact role being pursued.",
+        "Two project bullets are broad and would benefit from stronger ownership language."
+      ],
+      suggestions: [
+        "Rewrite the top three bullets under your latest role with metrics or measurable change.",
+        "Tailor the summary line to the exact internship or job title before each application.",
+        "Add missing ATS terms naturally within experience bullets rather than in a skill dump."
+      ],
+      keywords: [
+        "Stakeholder Alignment",
+        "Cross-functional Collaboration",
+        "Roadmap Planning",
+        "Data Analysis",
+        "A/B Testing"
+      ],
+      before: "Worked on projects and helped improve team workflows.",
+      after: "Led three cross-functional project launches, cutting review time by 28% and improving handoff clarity across design and engineering."
+    };
+
+    const heroCta = document.getElementById("hero-cta");
+    const dropzone = document.getElementById("dropzone");
+    const dropzoneInner = document.getElementById("dropzone-inner");
+    const input = document.getElementById("resume-input");
+    const browseButton = document.getElementById("browse-button");
+    const replaceButton = document.getElementById("replace-button");
+    const fileSummary = document.getElementById("file-summary");
+    const fileName = document.getElementById("file-name");
+    const fileMeta = document.getElementById("file-meta");
+    const analysis = document.getElementById("analysis");
+    const results = document.getElementById("results");
+    const progressList = document.getElementById("progress-list");
+    const progressFill = document.getElementById("progress-fill");
+    const progressIndex = document.getElementById("progress-index");
+    const atsFill = document.getElementById("ats-fill");
+    const keywords = document.getElementById("keywords");
+    const strengths = document.getElementById("strengths");
+    const weaknesses = document.getElementById("weaknesses");
+    const suggestions = document.getElementById("suggestions");
+    const scoreValue = document.getElementById("score-value");
+    const scoreGrade = document.getElementById("score-grade");
+    const atsValue = document.getElementById("ats-value");
+    const beforeCopy = document.getElementById("before-copy");
+    const afterCopy = document.getElementById("after-copy");
+
+    let analysisTimer = null;
+
+    function scrollToUpload() {
+      const top = dropzone.getBoundingClientRect().top + window.scrollY - 28;
+      window.scrollTo({ top, behavior: "smooth" });
+      dropzone.focus({ preventScroll: true });
+    }
+
+    function resetProgress() {
+      progressList.innerHTML = "";
+      analysisSteps.forEach((step, index) => {
+        const row = document.createElement("div");
+        row.className = "progress-row";
+        row.innerHTML = `
+          <span class="progress-dot" aria-hidden="true"></span>
+          <span>${step}</span>
+          <span class="progress-status">${index === 0 ? "Starting" : "Waiting"}</span>
+        `;
+        progressList.appendChild(row);
+      });
+      progressFill.style.width = "0%";
+      progressIndex.textContent = "Step 1 of 5";
+    }
+
+    function fillList(target, items) {
+      target.innerHTML = "";
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        target.appendChild(li);
+      });
+    }
+
+    function fillKeywords(items) {
+      keywords.innerHTML = "";
+      items.forEach((item) => {
+        const chip = document.createElement("span");
+        chip.className = "keyword-chip";
+        chip.textContent = item;
+        keywords.appendChild(chip);
+      });
+    }
+
+    function applyResults(data) {
+      scoreValue.textContent = String(data.score);
+      scoreGrade.textContent = data.grade;
+      atsValue.textContent = `${data.ats}%`;
+      atsFill.style.width = `${data.ats}%`;
+      fillList(strengths, data.strengths);
+      fillList(weaknesses, data.weaknesses);
+      fillList(suggestions, data.suggestions);
+      fillKeywords(data.keywords);
+      beforeCopy.textContent = data.before;
+      afterCopy.textContent = data.after;
+    }
+
+    function startAnalysis(file) {
+      if (analysisTimer) {
+        clearInterval(analysisTimer);
+      }
+
+      dropzoneInner.style.display = "none";
+      fileSummary.classList.add("is-visible");
+      fileName.textContent = file.name;
+      fileMeta.textContent = `${file.type.includes("word") || file.name.endsWith(".docx") ? "DOCX" : "PDF"} document ready for analysis`;
+      analysis.classList.add("is-visible");
+      results.classList.remove("is-visible");
+      resetProgress();
+      applyResults(sampleResults);
+
+      const rows = Array.from(progressList.children);
+      let currentStep = 0;
+
+      function paintStep() {
+        rows.forEach((row, index) => {
+          row.classList.toggle("is-active", index === currentStep);
+          row.classList.toggle("is-complete", index < currentStep);
+          const status = row.querySelector(".progress-status");
+          if (index < currentStep) {
+            status.textContent = "Complete";
+          } else if (index === currentStep) {
+            status.textContent = "In progress";
+          } else {
+            status.textContent = "Waiting";
+          }
+        });
+
+        const progress = ((currentStep + 1) / analysisSteps.length) * 100;
+        progressFill.style.width = `${progress}%`;
+        progressIndex.textContent = `Step ${Math.min(currentStep + 1, analysisSteps.length)} of ${analysisSteps.length}`;
+      }
+
+      paintStep();
+
+      analysisTimer = setInterval(() => {
+        currentStep += 1;
+        if (currentStep >= analysisSteps.length) {
+          clearInterval(analysisTimer);
+          analysisTimer = null;
+          rows.forEach((row) => {
+            row.classList.remove("is-active");
+            row.classList.add("is-complete");
+            row.querySelector(".progress-status").textContent = "Complete";
+          });
+          progressIndex.textContent = "Analysis complete";
+          progressFill.style.width = "100%";
+          results.classList.add("is-visible");
+          const top = results.getBoundingClientRect().top + window.scrollY - 18;
+          window.scrollTo({ top, behavior: "smooth" });
+          return;
+        }
+
+        paintStep();
+      }, 820);
+    }
+
+    function handleFiles(fileList) {
+      const [file] = Array.from(fileList);
+      if (!file) return;
+      const valid = /\.pdf$|\.doc$|\.docx$/i.test(file.name);
+      if (!valid) {
+        fileMeta.textContent = "Please upload a PDF or DOCX file.";
+        fileSummary.classList.add("is-visible");
+        dropzoneInner.style.display = "grid";
+        return;
+      }
+      startAnalysis(file);
+    }
+
+    heroCta.addEventListener("click", scrollToUpload);
+
+    browseButton.addEventListener("click", () => input.click());
+    replaceButton.addEventListener("click", () => input.click());
+    input.addEventListener("change", (event) => handleFiles(event.target.files));
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.add("is-dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove("is-dragover");
+      });
+    });
+
+    dropzone.addEventListener("drop", (event) => handleFiles(event.dataTransfer.files));
+    dropzone.addEventListener("click", () => input.click());
+    dropzone.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        input.click();
+      }
+    });
+
+    resetProgress();
+    applyResults(sampleResults);
+  </script>
+</body>
+</html>

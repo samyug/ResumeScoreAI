@@ -1,6 +1,7 @@
 {
-  "name": "temp-app",
-  "version": "0.1.0",
+  "name": "resumescore-ai",
+  "version": "1.0.0",
+  "description": "AI-powered resume evaluation and tailoring application.",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,13 +10,20 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^2.8.0",
+    "mammoth": "^1.12.0",
     "next": "16.2.9",
+    "openai": "^6.42.0",
+    "pdf-parse": "^1.1.1",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3",
+    "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

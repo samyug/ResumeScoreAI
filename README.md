@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ResumeScore AI
 
-## Getting Started
+ResumeScore AI is an intelligent, single-page application that evaluates resumes, highlights ATS (Applicant Tracking System) parsing risks, simulates recruiter feedback, and generates tailored cover letters and interview questions based on specific job descriptions. 
 
-First, run the development server:
+Built with Next.js and powered by OpenAI (Primary) and Google Gemini (Fallback), it guarantees resilient, high-speed structured data analysis.
 
+## ✨ Features
+* **ATS Risk Scanning:** Instantly identifies structural issues or formatting elements that prevent ATS parsers from reading your resume.
+* **Recruiter Simulation:** Analyzes the resume just like a human recruiter, outputting a "first impression" summary, hiring recommendation, and the strongest/weakest aspects of the candidate.
+* **Keyword Gap Analysis:** Compares your resume against a target job description and highlights high-impact missing keywords.
+* **Resume Tailoring:** Suggests specific bullet-point rewrites and structural optimizations tailored to the target role.
+* **Cover Letter Generation:** Drafts a professional cover letter combining your experience with the job requirements.
+* **Interview Prep:** Predicts technical and behavioral interview questions the candidate is likely to face based on their resume claims.
+* **Provider Failover:** Automatically routes requests to Google Gemini if the OpenAI API rate limits or fails.
+
+## 🛠 Tech Stack
+* **Framework**: [Next.js](https://nextjs.org/) (App Router)
+* **Styling**: Vanilla CSS (Vibrant, glassmorphism UI)
+* **AI Providers**: OpenAI (`gpt-4o`) & Google Gemini (`gemini-2.5-flash`)
+* **Parsing**: `pdf-parse` (PDFs) and `mammoth` (DOCX)
+* **Validation**: `zod` and `zod-to-json-schema` for guaranteed structured JSON outputs.
+
+## 🚀 Installation & Setup
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd resumescore-ai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Variables
+You must provide at least one AI API key for the application to function. 
+Duplicate the `.env.example` file and rename it to `.env.local`:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open `.env.local` and add your keys:
+* **OPENAI_API_KEY**: Get it from [OpenAI Platform](https://platform.openai.com/api-keys)
+* **GEMINI_API_KEY**: Get it from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
-## Learn More
+*Note: OpenAI is the primary provider. If the OpenAI key is missing or rate-limited, the application automatically falls back to Gemini.*
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Run the development server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗 Building for Production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To create an optimized production build:
+```bash
+npm run build
+npm start
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🐛 Troubleshooting
+* **Error: "Configuration Error: No AI provider API keys found."**
+  You haven't set up your `.env.local` file. Follow Step 3 above.
+* **Error: "The AI servers are currently experiencing high demand or rate limits."**
+  Both your primary (OpenAI) and fallback (Gemini) API keys have hit their rate limits or run out of credits. Check your billing dashboard for the respective provider.
+* **Hydration Warning (`crxlauncher`)**
+  If you see a React hydration warning regarding `crxlauncher=""` in your console, this is safely caused by a Chrome browser extension modifying the DOM. It does not affect application functionality.
